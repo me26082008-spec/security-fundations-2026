@@ -1,5 +1,7 @@
 # madu-cyber-labs
+
 Practical cybersecurity learning repository focused on offensive foundations, defensive thinking, and long-term specialization in Threat Intelligence and Cloud Security.
+![Captura de tela_4-2-2026_171621_chatgpt com](https://github.com/user-attachments/assets/d0a65cbf-ecfd-4f2f-bda1-b8f7b2e07394)
 
 ## Objective
 
