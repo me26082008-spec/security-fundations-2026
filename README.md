@@ -24,13 +24,14 @@ Focus Areas (Roadmap 2026)
 This repository documents the transition from foundational knowledge to applied technical depth.
 
 Repository Structure
-madu-cyber-lab/
+madu-cyber-lab
+
 ├─ README.md
-├─ writeups/
-├─ scripts/
-├─ detections/
-├─ outputs/
-└─ portfolio/
+├─ writeups
+├─ scripts
+├─ detections
+├─ outputs
+└─ portfolio
 
 writeups/
 Structured documentation of labs and exercises.
