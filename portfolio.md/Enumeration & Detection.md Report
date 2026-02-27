@@ -1,26 +1,26 @@
-## Engagement Type
+Engagement Type
 
 Initial External Enumeration Assessment
 
-## Scope
+Scope
 
 Public-facing host and exposed services
 
 
-#  Executive Summary
+Executive Summary
 
-## Objective
+Objective
 
 To assess externally exposed services and identify potential security risks through initial enumeration techniques.
 
-## Key Findings
+Key Findings
 
 * Publicly exposed **MySQL service (TCP 3306)**
 * Accessible backup file: `/config.php.bak`
 * Publicly accessible archive: `/backup.zip`
 * Publicly exposed SSH service (TCP 22)
 
-## Potential Impact
+Potential Impact
 
 These findings could allow:
 
@@ -29,12 +29,12 @@ These findings could allow:
 * Administrative access compromise
 * Full application takeover
 
-## Overall Risk Level
+Overall Risk Level
 
 **High to Critical**
 
 
-#  Methodology
+Methodology
 
 The assessment included:
 
@@ -47,9 +47,9 @@ No intrusive exploitation was performed.
 This assessment focused on exposure identification only.
 
 
-#  Technical Evidence
+Technical Evidence
 
-## Open Ports
+Open Ports
 
 | Port | Service | Exposure | Risk Level    |
 | ---- | ------- | -------- | ------------- |
@@ -58,9 +58,9 @@ This assessment focused on exposure identification only.
 | 443  | HTTPS   | Public   | Web Surface   |
 | 3306 | MySQL   | Public   | High–Critical |
 
----
 
-## Sensitive Directories / Files
+
+Sensitive Directories / Files
 
 | Path            | Status Code | Severity |
 | --------------- | ----------- | -------- |
@@ -71,36 +71,36 @@ This assessment focused on exposure identification only.
 Evidence screenshots may be included where applicable.
 
 
-# Recommended Mitigation
+Recommended Mitigation
 
-##  Critical
+Critical
 
 * Remove backup files from publicly accessible directories
 * Immediately rotate exposed credentials
 * Review server file exposure policies
 
-##  High
+High
 
 * Restrict MySQL access to internal network only
 * Remove public exposure from database service
 * Adjust firewall rules / security groups
 
-##  Medium
+Medium
 
 * Restrict SSH access by IP allowlist
 * Disable password-based authentication
 * Enforce key-based authentication
 
 
-#  SOC Detection Recommendations
+SOC Detection Recommendations
 
 This section proposes defensive monitoring strategies to detect potential exploitation attempts.
 
 
 
-## 5.1 MySQL Brute Force Detection
+MySQL Brute Force Detection
 
-**Strategy:** Threshold-based alert
+Strategy: Threshold-based alert
 
 
 IF failed_mysql_logins > 10 within 5 minutes
@@ -108,7 +108,7 @@ THEN alert "Possible MySQL Brute Force Attempt"
 
 
 
-## 5.2 Sensitive File Access Monitoring
+Sensitive File Access Monitoring
 
 Monitor HTTP requests targeting:
 
@@ -124,18 +124,17 @@ IF http_request_uri CONTAINS ".bak" OR ".zip"
 THEN alert "Sensitive File Access Attempt"
 
 
-
-## 5.3 SSH Brute Force Detection
+SSH Brute Force Detection
 
 IF failed_ssh_logins > 15 within 3 minutes
 THEN alert "Possible SSH Brute Force"
 
-## 5.4 Backup File Download Alert
+Backup File Download Alert
 
 IF http_status = 200 AND request_uri = "/backup.zip"
 THEN trigger High Priority Alert
 
-# Analyst Perspective
+Analyst Perspective
 
 This report demonstrates:
 
