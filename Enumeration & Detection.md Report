@@ -1,0 +1,149 @@
+## Engagement Type
+
+Initial External Enumeration Assessment
+
+## Scope
+
+Public-facing host and exposed services
+
+
+#  Executive Summary
+
+## Objective
+
+To assess externally exposed services and identify potential security risks through initial enumeration techniques.
+
+## Key Findings
+
+* Publicly exposed **MySQL service (TCP 3306)**
+* Accessible backup file: `/config.php.bak`
+* Publicly accessible archive: `/backup.zip`
+* Publicly exposed SSH service (TCP 22)
+
+## Potential Impact
+
+These findings could allow:
+
+* Unauthorized database access
+* Credential disclosure
+* Administrative access compromise
+* Full application takeover
+
+## Overall Risk Level
+
+**High to Critical**
+
+
+#  Methodology
+
+The assessment included:
+
+* Full TCP port scan
+* Service and version identification
+* Web directory brute-force enumeration
+* Manual endpoint analysis
+
+No intrusive exploitation was performed.
+This assessment focused on exposure identification only.
+
+
+#  Technical Evidence
+
+## Open Ports
+
+| Port | Service | Exposure | Risk Level    |
+| ---- | ------- | -------- | ------------- |
+| 22   | SSH     | Public   | Medium–High   |
+| 80   | HTTP    | Public   | Web Surface   |
+| 443  | HTTPS   | Public   | Web Surface   |
+| 3306 | MySQL   | Public   | High–Critical |
+
+---
+
+## Sensitive Directories / Files
+
+| Path            | Status Code | Severity |
+| --------------- | ----------- | -------- |
+| /config.php.bak | 200         | Critical |
+| /backup.zip     | 200         | High     |
+| /server-status  | 403         | Medium   |
+
+Evidence screenshots may be included where applicable.
+
+
+# Recommended Mitigation
+
+##  Critical
+
+* Remove backup files from publicly accessible directories
+* Immediately rotate exposed credentials
+* Review server file exposure policies
+
+##  High
+
+* Restrict MySQL access to internal network only
+* Remove public exposure from database service
+* Adjust firewall rules / security groups
+
+##  Medium
+
+* Restrict SSH access by IP allowlist
+* Disable password-based authentication
+* Enforce key-based authentication
+
+
+#  SOC Detection Recommendations
+
+This section proposes defensive monitoring strategies to detect potential exploitation attempts.
+
+
+
+## 5.1 MySQL Brute Force Detection
+
+**Strategy:** Threshold-based alert
+
+
+IF failed_mysql_logins > 10 within 5 minutes
+THEN alert "Possible MySQL Brute Force Attempt"
+
+
+
+## 5.2 Sensitive File Access Monitoring
+
+Monitor HTTP requests targeting:
+
+* `.bak`
+* `.zip`
+* `/config.php`
+* `/server-status`
+
+Pseudo-rule example:
+
+
+IF http_request_uri CONTAINS ".bak" OR ".zip"
+THEN alert "Sensitive File Access Attempt"
+
+
+
+## 5.3 SSH Brute Force Detection
+
+IF failed_ssh_logins > 15 within 3 minutes
+THEN alert "Possible SSH Brute Force"
+
+## 5.4 Backup File Download Alert
+
+IF http_status = 200 AND request_uri = "/backup.zip"
+THEN trigger High Priority Alert
+
+# Analyst Perspective
+
+This report demonstrates:
+
+* Exposure identification
+* Risk evaluation
+* Defensive detection thinking
+* Practical mitigation recommendations
+* SOC-oriented reasoning
+
+This assessment goes beyond enumeration and reflects security analysis aligned with defensive operations and threat monitoring practices.
+
